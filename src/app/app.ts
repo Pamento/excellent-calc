@@ -1,6 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CalcRow } from './calc-row/calc-row';
-import { CsvService } from './csv-service';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +7,6 @@ import { CsvService } from './csv-service';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App {
   protected readonly title = signal('exelent-calc');
-  excelCalcService = inject(CsvService);
-  ngOnInit(): void {
-    /*this.excelCalcService.loadCsvData();*/
-    console.log('Excelent Calc initalized');
-  }
 }
