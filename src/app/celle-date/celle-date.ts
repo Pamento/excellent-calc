@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-celle-date',
   imports: [],
   template: `
     <p>
-      celle-date works!
+      {{date}}
     </p>
   `,
   styles: ``,
 })
 export class CelleDate {
-
+  @Input() date = '';
 }

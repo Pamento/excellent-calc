@@ -1,14 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { CelleDate } from "./celle-date/celle-date";
-import { CelleDouble } from "./celle-double/celle-double";
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CalcRow } from './calc-row/calc-row';
+import { CsvService } from './csv-service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CelleDate, CelleDouble],
+  imports: [CalcRow],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('exelent-calc');
+  excelCalcService = inject(CsvService);
+  ngOnInit(): void {
+    /*this.excelCalcService.loadCsvData();*/
+    console.log('Excelent Calc initalized');
+  }
 }

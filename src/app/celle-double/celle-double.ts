@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-celle-double',
   imports: [],
   template: `
     <p>
-      celle-double works!
+      {{value}}
     </p>
   `,
   styles: ``,
 })
 export class CelleDouble {
-
+  @Input() value = 0;
 }
