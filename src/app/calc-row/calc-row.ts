@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnChanges, OnInit } from '@angular/core';
 import { CelleDate } from '../celle-date/celle-date';
 import { CelleDouble } from '../celle-double/celle-double';
 import { ExcelentCalcRow } from '../excelent-calc-row';
@@ -15,10 +15,14 @@ import { CsvService } from '../csv-service';
           <th scope="col">Compteur</th>
           <th scope="col">Litres</th>
           <th scope="col">Prix</th>
+          <th scope="col">Prix/litre</th>
+          <th scope="col">Km parcuru</th>
+          <th scope="col">Litres/100km</th>
+          <th scope="col">km/1l</th>
         </tr>
       </thead>
       <tbody>
-        @for (rowData of rowDatas; track $index) {
+        @for (rowData of rowsData; track $index) {
         <tr>
           <td>
             <app-celle-date [date]="rowData.date"></app-celle-date>
@@ -55,14 +59,26 @@ import { CsvService } from '../csv-service';
   `,
   styles: ``,
 })
-export class CalcRow implements OnInit {
+export class CalcRow implements OnInit, OnChanges {
   excelCalcService = inject(CsvService);
+  rowsData: ExcelentCalcRow[] = [];
 
   ngOnInit(): void {
-    this.excelCalcService.getData();
+    console.log('Rows Data init:', this.rowsData);
+    this.rowsData.push.apply(this.excelCalcService.getData());
+    console.log('Rows Data:', this.rowsData);
   }
 
-  rowDatas: ExcelentCalcRow[] = [
+  ngOnChanges(): void {
+    console.log('Rows Data change:', this.rowsData);
+    this.rowsData.push.apply(this.excelCalcService.getData());
+    console.log('Rows Data:', this.rowsData);
+  }
+
+  // Temporary hardcoded data for testing
+  // Remove this when integrating with CsvService
+
+  rowsDatas: ExcelentCalcRow[] = [
     {
       date: '2024-01-01',
       km: 1000,
