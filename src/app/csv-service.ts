@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ExcelentCalcRow } from './excelent-calc-row';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -10,11 +11,10 @@ export class CsvService {
 
   getData(): ExcelentCalcRow[] | [] {
     let lines: string[] = [];
-    this.http.get('/assets/inputs.csv', { responseType: 'text' }).subscribe((data) => {
+    this.http.get('/assets/inputs.csv', { responseType: 'text' }).pipe(takeUntilDestroyed()).subscribe((data) => {
       console.log(data);
       lines = data.split('\n');
       lines.forEach((line) => console.log(line));
-      console
     });
 
     console.log('Lines:', lines);
@@ -32,7 +32,7 @@ export class CsvService {
     for (let i = 1; i < lines.length; i++) {
       const columns = lines[i].split(',');
 
-      if (columns.length >= 4) {
+      if (columns.length >= 5) {
         const date = columns[0];
         const km = parseInt(columns[1]);
         const liters = parseFloat(columns[2]);

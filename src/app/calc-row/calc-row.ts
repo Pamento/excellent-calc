@@ -1,4 +1,4 @@
-import { Component, inject, OnChanges, OnInit } from '@angular/core';
+import { Component, inject, OnChanges } from '@angular/core';
 import { CelleDate } from '../celle-date/celle-date';
 import { CelleDouble } from '../celle-double/celle-double';
 import { ExcelentCalcRow } from '../excelent-calc-row';
@@ -59,13 +59,12 @@ import { CsvService } from '../csv-service';
   `,
   styles: ``,
 })
-export class CalcRow implements OnInit, OnChanges {
+export class CalcRow implements OnChanges {
   excelCalcService = inject(CsvService);
   rowsData: ExcelentCalcRow[] = [];
 
-  ngOnInit(): void {
-    console.log('Rows Data init:', this.rowsData);
-    this.rowsData.push.apply(this.excelCalcService.getData());
+  constructor() {
+    this.rowsData = this.excelCalcService.getData();
     console.log('Rows Data:', this.rowsData);
   }
 
