@@ -11,5 +11,5 @@ import { Component, Input } from '@angular/core';
   styles: ``,
 })
 export class CelleDate {
-  @Input() date = '';
+  @Input() date: string = '';
 }

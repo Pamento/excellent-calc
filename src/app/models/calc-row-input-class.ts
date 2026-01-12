@@ -1,4 +1,4 @@
-import { CalcRowInput } from "./calc-row-input";
+import { CalcRowInput } from "./interfaces/calc-row-input";
 
 export class CalcRowInputClass implements CalcRowInput {
     date: string;

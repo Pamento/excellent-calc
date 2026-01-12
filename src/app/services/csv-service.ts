@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ExcelentCalcRow } from './excelent-calc-row';
+import { ExcelentCalcRow } from '../models/interfaces/excelent-calc-row';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({
@@ -9,20 +9,26 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class CsvService {
   http = inject(HttpClient);
 
-  getData(): ExcelentCalcRow[] | [] {
-    let lines: string[] = [];
-    this.http.get('/assets/inputs.csv', { responseType: 'text' }).pipe(takeUntilDestroyed()).subscribe((data) => {
+  async getData(): Promise<ExcelentCalcRow[]> {
+    let lines: string[];
+    const response = await fetch('/assets/inputs.csv');
+    const data = await response.text();
+    console.log(data);
+    lines = data.split('\n');
+    return this.computeRowsData(lines) ?? [];
+    /*     try {
+      const response = await fetch('/assets/inputs.csv');
+      const data = await response.text();
       console.log(data);
       lines = data.split('\n');
-      lines.forEach((line) => console.log(line));
-    });
-
-    console.log('Lines:', lines);
-    return this.computeRowsData(lines);
+      return this.computeRowsData(lines) ?? [];
+    } catch (error) {
+      console.error('Error fetching CSV file:', error);
+      throw error;
+    } */
   }
 
-  private computeRowsData(lines: string[]): ExcelentCalcRow[] | [] {
-    console.log('Computing rows data from lines:', lines);
+  private computeRowsData(lines: string[]): ExcelentCalcRow[] {
     if (lines.length === 0) {
       return [];
     }
@@ -40,8 +46,8 @@ export class CsvService {
         const priceLiter = parseFloat(columns[4]);
 
         const kmDone = i > 1 ? km - parseInt(lines[i - 1].split(',')[1]) : 0;
-        const liters100km = kmDone > 0 ? (liters / kmDone) * 100 : 0;
-        const kmLiter = liters > 0 && kmDone > 0 ? kmDone / liters : 0;
+        const liters100km = kmDone > 0 ? Number(((liters / kmDone) * 100).toFixed(2)) : 0;
+        const kmLiter = liters > 0 && kmDone > 0 ? Number((kmDone / liters).toFixed(2)) : 0;
 
         rowsData.push({
           date,

@@ -1,4 +1,4 @@
-import { ExcelentCalcRow } from "./excelent-calc-row";
+import { ExcelentCalcRow } from "./interfaces/excelent-calc-row";
 
 export class CalcRowClass implements ExcelentCalcRow {
     date: string;

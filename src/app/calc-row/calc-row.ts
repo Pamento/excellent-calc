@@ -1,77 +1,94 @@
-import { Component, inject, OnChanges } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CelleDate } from '../celle-date/celle-date';
 import { CelleDouble } from '../celle-double/celle-double';
-import { ExcelentCalcRow } from '../excelent-calc-row';
-import { CsvService } from '../csv-service';
+import { ExcelentCalcRow } from '../models/interfaces/excelent-calc-row';
+import { CsvService } from '../services/csv-service';
 
 @Component({
   selector: 'app-calc-row',
   imports: [CelleDate, CelleDouble],
   template: `
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Compteur</th>
-          <th scope="col">Litres</th>
-          <th scope="col">Prix</th>
-          <th scope="col">Prix/litre</th>
-          <th scope="col">Km parcuru</th>
-          <th scope="col">Litres/100km</th>
-          <th scope="col">km/1l</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (rowData of rowsData; track $index) {
-        <tr>
-          <td>
-            <app-celle-date [date]="rowData.date"></app-celle-date>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.km"></app-celle-double>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.liters"></app-celle-double>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.price"></app-celle-double>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.priceLiter"></app-celle-double>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.kmDone"></app-celle-double>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.liters100km"></app-celle-double>
-          </td>
-          <td>
-            <app-celle-double [value]="rowData.kmLiter"></app-celle-double>
-          </td>
-        </tr>
-        } @empty {
-        <tr>
-          <td colspan="4">No data available</td>
-        </tr>
-        }
-      </tbody>
-    </table>
+    <div>
+      @if (rowsData.length === 0) {
+        <p>Loading data...</p>
+      } @else {
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">N°</th>
+            <th scope="col">Date</th>
+            <th scope="col">Compteur</th>
+            <th scope="col">Litres</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Prix/litre</th>
+            <th scope="col">Km parcuru</th>
+            <th scope="col">Litres/100km</th>
+            <th scope="col">km/1l</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (rowData of rowsData; track $index) {
+          <tr>
+            <td>
+              <app-celle-double [value]="$index"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-date [date]="rowData.date"></app-celle-date>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.km"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.liters"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.price"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.priceLiter"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.kmDone"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.liters100km"></app-celle-double>
+            </td>
+            <td>
+              <app-celle-double [value]="rowData.kmLiter"></app-celle-double>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="4">No data available</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+    </div>
   `,
   styles: ``,
 })
-export class CalcRow implements OnChanges {
+export class CalcRow implements OnInit {
   excelCalcService = inject(CsvService);
   rowsData: ExcelentCalcRow[] = [];
 
   constructor() {
-    this.rowsData = this.excelCalcService.getData();
-    console.log('Rows Data:', this.rowsData);
   }
 
-  ngOnChanges(): void {
-    console.log('Rows Data change:', this.rowsData);
-    this.rowsData.push.apply(this.excelCalcService.getData());
-    console.log('Rows Data:', this.rowsData);
+  ngOnInit() {
+    this.excelCalcService
+      .getData()
+      .then((data: ExcelentCalcRow[]) => {
+        console.log('Rows Data 0:', this.rowsData);
+        console.log('Rows Data D:', data);
+        this.rowsData = data;
+        console.log('Rows Data:', this.rowsData);
+      })
+      .catch((error) => {
+        console.error('Error loading data:', error);
+      });
+    console.log('Rows Data after:', this.rowsData);
   }
 
   // Temporary hardcoded data for testing

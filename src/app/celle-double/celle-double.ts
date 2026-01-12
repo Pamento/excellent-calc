@@ -11,5 +11,5 @@ import { Component, Input } from '@angular/core';
   styles: ``,
 })
 export class CelleDouble {
-  @Input() value = 0;
+  @Input() value: number = 0;
 }
