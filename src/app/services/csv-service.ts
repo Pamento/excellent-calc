@@ -1,13 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ExcelentCalcRow } from '../models/interfaces/excelent-calc-row';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CsvService {
   http = inject(HttpClient);
+
+
+  getDataFromSCV(): Observable<ExcelentCalcRow[]> {
+    return this.http.get('/assets/inputs.csv', { responseType: 'text' }).pipe(
+      map((data: any) => {
+        const lines = data.split('\n');
+        return this.computeRowsData(lines) ?? [];
+      }
+    ));   
+  }
 
   async getData(): Promise<ExcelentCalcRow[]> {
     let lines: string[];

@@ -1,15 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { CelleDate } from '../celle-date/celle-date';
 import { CelleDouble } from '../celle-double/celle-double';
 import { ExcelentCalcRow } from '../models/interfaces/excelent-calc-row';
 import { CsvService } from '../services/csv-service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-calc-row',
-  imports: [CelleDate, CelleDouble],
+  imports: [CelleDate, CelleDouble, AsyncPipe],
   template: `
     <div>
-      @if (rowsData.length === 0) {
+      @if (loading) {
         <p>Loading data...</p>
       } @else {
       <table>
@@ -27,7 +29,7 @@ import { CsvService } from '../services/csv-service';
           </tr>
         </thead>
         <tbody>
-          @for (rowData of rowsData; track $index) {
+          @for (rowData of rowsData$ | async; track $index) {
           <tr>
             <td>
               <app-celle-double [value]="$index"></app-celle-double>
@@ -71,25 +73,31 @@ import { CsvService } from '../services/csv-service';
 })
 export class CalcRow implements OnInit {
   excelCalcService = inject(CsvService);
-  rowsData: ExcelentCalcRow[] = [];
+  rowsData$!: Observable<ExcelentCalcRow[]>;
+  loading: boolean = true;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.excelCalcService
-      .getData()
-      .then((data: ExcelentCalcRow[]) => {
-        console.log('Rows Data 0:', this.rowsData);
-        console.log('Rows Data D:', data);
-        this.rowsData = data;
-        console.log('Rows Data:', this.rowsData);
-      })
-      .catch((error) => {
-        console.error('Error loading data:', error);
-      });
-    console.log('Rows Data after:', this.rowsData);
+    this.rowsData$ = this.excelCalcService.getDataFromSCV();
+    this.loading = false;
   }
+
+  // ngOnInit() {
+  //   this.excelCalcService
+  //     .getData()
+  //     .then((data: ExcelentCalcRow[]) => {
+  //       console.log('Rows Data 0:', this.rowsData);
+  //       console.log('Rows Data D:', data);
+  //       this.rowsData = data;
+  //       console.log('Rows Data:', this.rowsData);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error loading data:', error);
+  //     });
+  //   console.log('Rows Data after:', this.rowsData);
+  // }
 
   // Temporary hardcoded data for testing
   // Remove this when integrating with CsvService
