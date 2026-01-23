@@ -69,7 +69,22 @@ import { Observable } from 'rxjs';
       }
     </div>
   `,
-  styles: ``,
+  styles: `
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #393e41;
+    color: #ffffff;
+  }
+  table, th, td {
+    border: 1px solid #3f88c5;
+    margin: 24px 0px;
+    white-space: nowrap;
+  }
+  th {
+    padding: 6px 16px;
+  }
+  `,
 })
 export class CalcRow implements OnInit {
   excelCalcService = inject(CsvService);
@@ -83,55 +98,4 @@ export class CalcRow implements OnInit {
     this.rowsData$ = this.excelCalcService.getDataFromSCV();
     this.loading = false;
   }
-
-  // ngOnInit() {
-  //   this.excelCalcService
-  //     .getData()
-  //     .then((data: ExcelentCalcRow[]) => {
-  //       console.log('Rows Data 0:', this.rowsData);
-  //       console.log('Rows Data D:', data);
-  //       this.rowsData = data;
-  //       console.log('Rows Data:', this.rowsData);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error loading data:', error);
-  //     });
-  //   console.log('Rows Data after:', this.rowsData);
-  // }
-
-  // Temporary hardcoded data for testing
-  // Remove this when integrating with CsvService
-
-  rowsDatas: ExcelentCalcRow[] = [
-    {
-      date: '2024-01-01',
-      km: 1000,
-      liters: 50,
-      price: 75,
-      priceLiter: 1.5,
-      kmDone: 0,
-      liters100km: 0,
-      kmLiter: 0,
-    },
-    {
-      date: '2024-02-01',
-      km: 1500,
-      liters: 40,
-      price: 60,
-      priceLiter: 1.5,
-      kmDone: 500,
-      liters100km: 8,
-      kmLiter: 12.5,
-    },
-    {
-      date: '2024-03-01',
-      km: 2000,
-      liters: 60,
-      price: 90,
-      priceLiter: 1.5,
-      kmDone: 500,
-      liters100km: 12,
-      kmLiter: 8.33,
-    },
-  ];
 }

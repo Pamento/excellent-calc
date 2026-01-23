@@ -26,16 +26,6 @@ export class CsvService {
     console.log(data);
     lines = data.split('\n');
     return this.computeRowsData(lines) ?? [];
-    /*     try {
-      const response = await fetch('/assets/inputs.csv');
-      const data = await response.text();
-      console.log(data);
-      lines = data.split('\n');
-      return this.computeRowsData(lines) ?? [];
-    } catch (error) {
-      console.error('Error fetching CSV file:', error);
-      throw error;
-    } */
   }
 
   private computeRowsData(lines: string[]): ExcelentCalcRow[] {

@@ -4,11 +4,15 @@ import { Component, Input } from '@angular/core';
   selector: 'app-celle-date',
   imports: [],
   template: `
-    <p>
+    <p class="cell-date">
       {{date}}
     </p>
   `,
-  styles: ``,
+  styles: `
+    .cell-date {
+      margin: 6px 10px;
+    }
+  `,
 })
 export class CelleDate {
   @Input() date: string = '';

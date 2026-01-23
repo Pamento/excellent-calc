@@ -34,6 +34,11 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  body, html {
+    background-color: #B7410E;
+    margin: 0;
+  }
+
   h1 {
     font-size: 3.125rem;
     color: var(--gray-900);
@@ -57,7 +62,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
     box-sizing: inherit;
     position: relative;
   }
