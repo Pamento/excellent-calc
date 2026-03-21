@@ -30,7 +30,7 @@ import { Observable } from 'rxjs';
         </thead>
         <tbody>
           @for (rowData of rowsData$ | async; track $index) {
-          <tr>
+          <tr [class]="rowData.rowStyle">
             <td>
               <app-celle-double [value]="$index"></app-celle-double>
             </td>
@@ -85,7 +85,7 @@ import { Observable } from 'rxjs';
     padding: 6px 16px;
   }
   .month-avarage {
-    background-color: #f2f2f2;
+    background-color: #f6f7eb;
     color: #393e41;;
   }
   `,

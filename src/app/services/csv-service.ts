@@ -67,6 +67,7 @@ export class CsvService {
           kmDone,
           liters100km,
           kmLiter,
+          rowStyle: '',
         });
       }
     }
@@ -80,7 +81,7 @@ export class CsvService {
     const totalKmDone = monthRows.reduce((sum, row) => sum + row.kmDone, 0);
     const totalLiters = monthRows.reduce((sum, row) => sum + row.liters, 0);
     const totalPrice = this.roundIfNeeded(monthRows.reduce((sum, row) => sum + row.price, 0));
-    const priceLiter = totalLiters > 0 ? Number((totalPrice / totalLiters).toFixed(3)) : 0;
+    const priceLiter = Number((monthRows.reduce((sum, row) => sum + row.priceLiter, 0) / monthRows.length).toFixed(3));
     const liters100km = totalKmDone > 0 ? Number(((totalLiters / totalKmDone) * 100).toFixed(2)) : 0;
     const kmLiter = totalLiters > 0 && totalKmDone > 0 ? Number((totalKmDone / totalLiters).toFixed(2)) : 0;
 
@@ -93,6 +94,7 @@ export class CsvService {
       kmDone: totalKmDone,
       liters100km,
       kmLiter,
+      rowStyle: 'month-avarage',
     };
   }
 

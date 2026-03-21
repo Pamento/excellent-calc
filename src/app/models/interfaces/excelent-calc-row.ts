@@ -7,4 +7,5 @@ export interface ExcelentCalcRow {
     kmDone: number;
     liters100km: number;
     kmLiter: number;
+    rowStyle: string;
 }
