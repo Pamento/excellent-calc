@@ -84,6 +84,10 @@ import { Observable } from 'rxjs';
   th {
     padding: 6px 16px;
   }
+  .month-avarage {
+    background-color: #f2f2f2;
+    color: #393e41;;
+  }
   `,
 })
 export class CalcRow implements OnInit {
