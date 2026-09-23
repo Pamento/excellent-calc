@@ -90,10 +90,10 @@ export class CsvService {
       km: 0,
       liters: totalLiters,
       price: totalPrice,
-      priceLiter,
+      priceLiter: priceLiter,
       kmDone: totalKmDone,
-      liters100km,
-      kmLiter,
+      liters100km: liters100km,
+      kmLiter: kmLiter,
       rowStyle: 'month-avarage',
     };
   }
